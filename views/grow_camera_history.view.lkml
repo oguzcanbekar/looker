@@ -83,15 +83,15 @@ view: grow_camera_history {
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [
-	id,
-	grow_camera.id,
-	grow_camera.name,
-	room.id,
-	room.name,
-	group.id,
-	group.name,
-	group.nickname
-	]
+  id,
+  grow_camera.id,
+  grow_camera.name,
+  room.id,
+  room.name,
+  group.id,
+  group.name,
+  group.nickname
+  ]
   }
 
 }
