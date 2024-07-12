@@ -36,6 +36,12 @@ explore: alarm {
   }
 }
 
+explore: average_daily {}
+
+explore: room_dayage_weightlist {}
+
+explore: sql_runner_query {}
+
 explore: alarm_category {}
 
 explore: alarm_history {

@@ -49,7 +49,7 @@ view: average_daily {
     sql: ${TABLE}.dayage ;;
   }
 
-  dimension: average_weight {
+  measure: average_weight {
     type: number
     sql: ${TABLE}.average_weight ;;
   }
@@ -57,8 +57,8 @@ view: average_daily {
   set: detail {
     fields: [
         room_id,
-	dayage,
-	average_weight
+  dayage,
+  average_weight
     ]
   }
 }
