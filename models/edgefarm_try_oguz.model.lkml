@@ -44,6 +44,10 @@ explore: sql_runner_query {}
 
 explore: alarm_category {}
 
+explore: sample {
+  group_label: "intflow"
+}
+
 explore: alarm_history {
   join: member {
     type: left_outer
