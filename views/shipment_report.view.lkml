@@ -11,6 +11,18 @@ view: shipment_report {
              , DATEDIFF(substr(started_at, 1,10), MIN(substr(started_at, 1,10)) OVER (PARTITION BY category_id)) AS days
         FROM movement
         GROUP BY base_date, category_id
+      ),
+      room_info AS (
+        SELECT g.room_id,
+               r.name AS room_name
+        FROM `group` g
+        JOIN `room` r ON g.room_id = r.id
+      ),
+      shipment_with_rooms AS (
+        SELECT sb.*,
+               ri.room_name
+        FROM shipment_base sb
+        LEFT JOIN room_info ri ON sb.category_id = ri.room_id
       )
       SELECT
           base_date,
@@ -19,8 +31,9 @@ view: shipment_report {
           total_move_stock,
           total_sum_weight,
           avg_weight,
-          days
-      FROM shipment_base
+          days,
+          room_name
+      FROM shipment_with_rooms
       ;;
   }
 
@@ -64,6 +77,11 @@ view: shipment_report {
     sql: ${TABLE}.days ;;
   }
 
+  dimension: room_name {
+    type: string
+    sql: ${TABLE}.room_name ;;
+  }
+
   # Measures similar to the example view
   measure: total_move_stock_measure {
     type: sum
@@ -73,6 +91,7 @@ view: shipment_report {
     <ul>
       <li> Date: {{base_date}} </li>
       <li> Total Move Stock: {{total_move_stock}} </li>
+      <li> Room: {{room_name}} </li>
     </ul> ;;
   }
 
@@ -84,6 +103,7 @@ view: shipment_report {
     <ul>
       <li> Date: {{base_date}} </li>
       <li> Total Sum Weight: {{total_sum_weight}} </li>
+      <li> Room: {{room_name}} </li>
     </ul> ;;
   }
 
@@ -95,6 +115,7 @@ view: shipment_report {
     <ul>
       <li> Date: {{base_date}} </li>
       <li> Average Weight: {{avg_weight}} </li>
+      <li> Room: {{room_name}} </li>
     </ul> ;;
   }
 
@@ -124,7 +145,8 @@ view: shipment_report {
       total_move_stock,
       total_sum_weight,
       avg_weight,
-      days
+      days,
+      room_name
     ]
   }
 }
