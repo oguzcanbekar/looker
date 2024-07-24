@@ -8,6 +8,7 @@ view: shipment_report {
              , SUM(avg_weight * stock) AS total_sum_weight
              , AVG(avg_weight) AS avg_weight
              , count(1) AS report_cnt
+             , DATEDIFF(substr(started_at, 1,10), MIN(substr(started_at, 1,10)) OVER (PARTITION BY category_id)) AS days
         FROM movement
         GROUP BY base_date, category_id
       )
@@ -17,7 +18,8 @@ view: shipment_report {
           report_cnt,
           total_move_stock,
           total_sum_weight,
-          avg_weight
+          avg_weight,
+          days
       FROM shipment_base
       ;;
   }
@@ -57,6 +59,11 @@ view: shipment_report {
     sql: ${TABLE}.avg_weight ;;
   }
 
+  dimension: days {
+    type: number
+    sql: ${TABLE}.days ;;
+  }
+
   # Measures similar to the example view
   measure: total_move_stock_measure {
     type: sum
@@ -92,6 +99,11 @@ view: shipment_report {
   }
 
   # Filters similar to the example view
+  filter: target_weight {
+    type: number
+    sql: {% condition avg_weight %} ${avg_weight} {% endcondition %} ;;
+  }
+
   filter: category_filter {
     type: string
     suggest_dimension: category_id
@@ -111,7 +123,8 @@ view: shipment_report {
       report_cnt,
       total_move_stock,
       total_sum_weight,
-      avg_weight
+      avg_weight,
+      days
     ]
   }
 }

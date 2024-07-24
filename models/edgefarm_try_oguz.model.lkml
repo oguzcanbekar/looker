@@ -38,7 +38,9 @@ explore: alarm {
 
 explore: average_daily {}
 
-explore: shipment_report {}
+explore: shipment_report {
+  group_label: "intflow"
+}
 
 explore: room_dayage_weightlist {}
 
