@@ -38,6 +38,8 @@ explore: alarm {
 
 explore: average_daily {}
 
+explore: shipment_report {}
+
 explore: room_dayage_weightlist {}
 
 explore: sql_runner_query {}
